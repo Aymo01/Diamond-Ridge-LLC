@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export function About() {
   useEffect(() => {
-    document.title = "About Us | Diamond Ridge LLC - Trusted Since 2012";
+    document.title = "About Us | Diamond Ridge LLC - Trusted Since 2012"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/about');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Learn about Diamond Ridge LLC - 12+ years of commercial maintenance excellence in Orland Hills, IL. Serving Fortune 500 companies and businesses nationwide since 2012.");
