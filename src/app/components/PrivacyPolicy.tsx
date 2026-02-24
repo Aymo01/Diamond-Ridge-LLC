@@ -4,7 +4,7 @@ import { Shield, Lock, Eye, FileText } from "lucide-react";
 
 export function PrivacyPolicy() {
   useEffect(() => {
-    document.title = "Privacy Policy | Diamond Ridge LLC";
+    document.title = "Privacy Policy | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/privacy-policy');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Read Diamond Ridge LLC's privacy policy. Learn how we collect, use, and protect your personal information when you use our commercial maintenance services.");
