@@ -22,7 +22,7 @@ import pressureWashingImg from "@/assets/PressureWashing.jpg";
 
 import trashCleaningImg from "@/assets/trash.jpg";
 export function Services() {
-  // v2 - force rebuild
+      // v3 - force cache purge
   useEffect(() => {
     document.title = "Our Services | Diamond Ridge LLC - HVAC, Electrical, Plumbing & More"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/services');
     const metaDescription = document.querySelector('meta[name="description"]');
