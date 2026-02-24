@@ -173,7 +173,7 @@ export function About() {
                         transition={{ delay: 0.5, type: "spring" }}
                         className="text-5xl font-bold text-[#D08700] mb-2"
                       >
-                        500+
+                        1000+
                       </motion.div>
                       <div className="text-gray-700 font-semibold text-lg">
                         Trusted Partnerships
