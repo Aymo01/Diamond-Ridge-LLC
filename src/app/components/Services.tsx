@@ -8,6 +8,7 @@ import {
   Paintbrush,
   Grid3x3,
   Sparkles,
+  Trash2,
   Trees,
   CarFront,
   CheckCircle,
@@ -38,11 +39,7 @@ export function Services() {
       features: [
         "Regular facility inspections",
         "Preventive maintenance programs",
-        "Trash collection & Cleaning Services",
-        "Dumpster management",
-        "Sidewalk surface cleaning",
         "Equipment servicing",
-        "Parking lot sweeping & cleaning",
         "Cold patch & hot patch asphalt repair",
         "Door & window repairs",
         "Furniture assembly & installation",
@@ -157,8 +154,6 @@ export function Services() {
         "Parking lot & sidewalk cleaning",
         "Window cleaning (interior & exterior)",
         "Power washing surfaces",
-        "Graffiti removal",
-        "Gum & stain removal",
         "Regular maintenance programs",
       ],
               image: pressureWashingImg,
@@ -177,6 +172,23 @@ export function Services() {
         "Mulching & fertilization",
       ],
       image: "https://images.unsplash.com/photo-1741527694859-925f4a4ec88e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tZXJjaWFsJTIwbGFuZHNjYXBpbmclMjBsYXduJTIwbWFpbnRlbmFuY2V8ZW58MXx8fHwxNzcxNDE0MzY3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      useImageTag: false,
+    },
+        {
+      icon: Trash2,
+      title: "Trash & Cleaning Services",
+      description:
+        "Professional trash collection, cleaning, and facility sanitation services to keep your commercial property spotless and well-maintained. From daily trash removal and dumpster management to deep cleaning and carpet care, we handle all aspects of facility cleanliness with reliable, scheduled programs tailored to your needs.",
+      features: [
+        "Trash collection & removal",
+        "Dumpster management",
+        "Parking lot sweeping & cleaning",
+        "Sidewalk surface cleaning",
+        "Graffiti, gum, & stain removal",
+        "Regular maintenance & cleaning programs",
+        "Carpet Cleaning",
+      ],
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tZXJjaWFsJTIwY2xlYW5pbmclMjBzZXJ2aWNlc3xlbnwxfHx8fDE3NzE0MTQzNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       useImageTag: false,
     },
   ];
@@ -222,7 +234,7 @@ export function Services() {
               className="inline-block mb-6"
             >
               <span className="bg-yellow-500 text-white px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider shadow-lg">
-                9 Specialized Services
+                              10 Specialized Services
               </span>
             </motion.div>
             
