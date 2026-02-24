@@ -108,7 +108,7 @@ export function About() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
                   className="leading-relaxed"
-                >Our team doesn't just bring expertise, we bring . Every project, from emergency repairs to comprehensive maintenance programs, receives the same level of dedication and precision that's made us the go to choice for Fortune companies and local businesses alike.<span className="text-gray-900 font-semibold">passion</span></motion.p>
+                >Our team doesn't just bring expertise, we bring passion. Every project, from emergency repairs to comprehensive maintenance programs, receives the same level of dedication and precision that's made us the go to choice for Fortune companies and local businesses alike.<span className="text-gray-900 font-semibold">passion</span></motion.p>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
