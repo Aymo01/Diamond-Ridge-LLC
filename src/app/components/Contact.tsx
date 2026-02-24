@@ -19,7 +19,7 @@ import { sendEmail, TEMPLATES } from "../utils/emailjs";
 
 export function Contact() {
   useEffect(() => {
-    document.title = "Contact Us | Diamond Ridge LLC - (464) 888-3930";
+    document.title = "Contact Us | Diamond Ridge LLC - (464) 888-3930"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/contact');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Contact Diamond Ridge LLC for commercial maintenance services. Call (464) 888-3930 or visit us at 16733 Vicky Lane, Orland Hills, IL 60487. 24/7 emergency services available.");
