@@ -17,7 +17,6 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useEffect } from "react";
 import locksmithImg from "@/assets/Locksmith.png";
 import hvacImg from "@/assets/HVAC.png";
-import pressureWashingImg from "@/assets/PressureWashing.jpg";
 
 export function Services() {
   // v2 - force rebuild
@@ -161,7 +160,7 @@ export function Services() {
         "Gum & stain removal",
         "Regular maintenance programs",
       ],
-      image: pressureWashingImg,
+          image: "/PressureWashing.jpg",
       useImageTag: true,
     },
     {
