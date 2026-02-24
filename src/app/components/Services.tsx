@@ -20,7 +20,7 @@ import locksmithImg from "@/assets/Locksmith.png";
 import hvacImg from "@/assets/HVAC.png";
 import pressureWashingImg from "@/assets/PressureWashing.jpg";
 
-import trashCleaningImg from "@/assets/Trashremoval .jpg";
+import trashCleaningImg from "@/assets/trash.jpg";
 export function Services() {
   // v2 - force rebuild
   useEffect(() => {
