@@ -47,7 +47,7 @@ export function Home() {
   ];
 
   const stats = [
-    { number: "500+", label: "Projects Completed" },
+    { number: "1000+", label: "Projects Completed" },
     { number: "12+", label: "Years Experience" },
     { number: "24/7", label: "Support Available" },
   ];
