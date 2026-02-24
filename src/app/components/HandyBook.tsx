@@ -58,7 +58,7 @@ export function HandyBook() {
   const categories = ["All", "Maintenance Tips", "Industry News", "Company Updates"];
 
   useEffect(() => {
-    document.title = "HandyBook - Expert Tips & Maintenance Insights | Diamond Ridge LLC";
+    document.title = "HandyBook - Expert Tips & Maintenance Insights | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/handybook');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Expert maintenance tips, insights, and guides from Diamond Ridge LLC professionals. Learn about HVAC, plumbing, electrical, and more.");
