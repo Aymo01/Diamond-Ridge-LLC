@@ -36,6 +36,9 @@ export function Services() {
       features: [
         "Regular facility inspections",
         "Preventive maintenance programs",
+        "Trash collection & Cleaning Services",
+        "Dumpster management",
+        "Sidewalk surface cleaning",
         "Equipment servicing",
         "Parking lot sweeping & cleaning",
         "Cold patch & hot patch asphalt repair",
@@ -82,6 +85,9 @@ export function Services() {
       title: "Plumbing",
       description: "Complete plumbing solutions for commercial properties, from routine maintenance to complex installations and emergency repairs. Our experienced plumbers ensure your facility's water systems operate flawlessly, preventing costly water damage and maintaining sanitary conditions throughout your building with minimal disruption to your business operations.",
       features: [
+        "Sump pump inspection & repair",
+        "Ceiling leak inspection & repair",
+        "Clogged drain lines & mainline jetting",
         "Leak detection & repair services",
         "Professional drain cleaning",
         "Fixture installation & replacement",
@@ -97,6 +103,10 @@ export function Services() {
       title: "Locksmith",
       description: "Professional commercial locksmith services to protect your business assets and ensure the security of your facility. Our skilled locksmiths provide rapid response for lockouts, security upgrades, master key systems, and access control solutions tailored to your commercial property's unique security needs.",
       features: [
+        "Sliding door & pull door inspection / repair",
+        "Air force door troubleshooting & repair",
+        "Door latches replacement (ground saver bins)",
+        "Broken blinds / rollers / chains repair",
         "Lock installation & repair",
         "Key duplication & master key systems",
         "High-security lock upgrades",
@@ -235,7 +245,6 @@ export function Services() {
               <br />
               <span className="text-gray-900 font-semibold">One call, endless solutions.</span>
             </motion.p>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -457,7 +466,6 @@ export function Services() {
               </motion.div>
             ))}
           </div>
-
           {/* Connector Line */}
           <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D08700]/20 to-transparent -z-10" />
         </div>
@@ -497,7 +505,6 @@ export function Services() {
               }}
               className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl"
             />
-
             <div className="relative z-10">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
