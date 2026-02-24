@@ -20,7 +20,7 @@ import hvacImg from "@/assets/HVAC.png";
 
 export function Services() {
   useEffect(() => {
-    document.title = "Our Services | Diamond Ridge LLC - HVAC, Electrical, Plumbing & More";
+    document.title = "Our Services | Diamond Ridge LLC - HVAC, Electrical, Plumbing & More"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/services');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Complete commercial maintenance services: General Maintenance, HVAC, Electrical, Plumbing, Locksmith, Drywall/Painting, Flooring, Pressure Washing, and Landscaping.");
