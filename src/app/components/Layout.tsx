@@ -1,0 +1,356 @@
+import { Outlet, Link, useLocation } from "react-router";
+import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
+import { Menu, X, Phone, MapPin, Mail, MessageCircle, ChevronUp, Send, CheckCircle, AlertCircle, Loader } from "lucide-react";
+import logo from "@/assets/logo.png";
+import { Breadcrumb } from "./Breadcrumb";
+import { sendEmail, TEMPLATES } from "../utils/emailjs";
+
+export function Layout() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterStatus("loading");
+    setNewsletterMessage("");
+
+    try {
+      // Prepare template parameters
+      const templateParams = {
+        form_type: 'Newsletter Signup',
+        name: 'Newsletter Subscriber',
+        from_name: 'Newsletter Subscriber',
+        from_email: newsletterEmail,
+        message: 'New newsletter signup: ' + newsletterEmail,
+        subject: 'New Newsletter Signup',
+        service: '',
+        rating: ''
+      };
+
+      // Send email via EmailJS
+      const result = await sendEmail(TEMPLATES.NEWSLETTER, templateParams);
+
+      if (!result.success) {
+        throw result.error || new Error("Failed to subscribe.");
+      }
+
+      // Success
+      setNewsletterStatus("success");
+      setNewsletterMessage("Thank you for subscribing! You'll receive maintenance tips and updates from Diamond Ridge LLC.");
+      setNewsletterEmail("");
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setNewsletterStatus("idle");
+        setNewsletterMessage("");
+      }, 5000);
+    } catch (error: any) {
+      console.error('Newsletter signup error:', error);
+      setNewsletterStatus("error");
+      setNewsletterMessage("Failed to subscribe. Please try again later.");
+      
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setNewsletterStatus("idle");
+        setNewsletterMessage("");
+      }, 5000);
+    }
+  };
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Why Us", path: "/why-us" },
+    { name: "HandyBook", path: "/handybook" },
+    { name: "Request Quote", path: "/quote" },
+    { name: "Contact", path: "/contact" },
+    { name: "Feedback", path: "/feedback" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header */}
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-lg"
+            : "bg-transparent"
+        }`}
+      >
+        {/* Top Bar */}
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-2">
+          <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+            <div className="flex items-center gap-4">
+              <a href="tel:4648883930" className="flex items-center gap-2 hover:text-[#D08700] transition-colors">
+                <Phone className="w-4 h-4" />
+                <span>(464) 888-3930</span>
+              </a>
+              <a href="mailto:info@diamondridgellc.us" className="hidden sm:flex items-center gap-2 hover:text-[#D08700] transition-colors">
+                <Mail className="w-4 h-4" />
+                <span>info@diamondridgellc.us</span>
+              </a>
+              <span className="hidden md:flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
+                  16733 Vicky Lane, Orland Hills, IL 60487
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Navigation */}
+        <nav className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <motion.img
+                src={logo}
+                alt="Diamond Ridge LLC"
+                className="h-12 md:h-16"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              />
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="relative group"
+                >
+                  <span
+                    className={`transition-colors ${
+                      location.pathname === item.path
+                        ? "text-[#D08700] font-semibold"
+                        : "text-gray-700 hover:text-[#D08700]"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                  <motion.div
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#D08700]"
+                    initial={{ scaleX: 0 }}
+                    animate={{
+                      scaleX: location.pathname === item.path ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-gray-700 hover:text-[#D08700] transition-colors"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden bg-white border-t overflow-hidden"
+            >
+              <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.path}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link
+                      to={item.path}
+                      className={`block py-2 ${
+                        location.pathname === item.path
+                          ? "text-[#D08700] font-semibold"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
+
+      {/* Main Content */}
+      <main className="pt-32 md:pt-36">
+        <Breadcrumb />
+        <Outlet />
+      </main>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <motion.button
+          onClick={handleBackToTop}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          whileHover={{ scale: 1.05 }}
+          className="fixed bottom-6 right-6 z-50 bg-[#D08700] p-4 rounded-full shadow-lg hover:bg-[#D08700]/90 transition-all duration-300 group"
+        >
+          <ChevronUp size={24} className="text-white" />
+        </motion.button>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white mt-20">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Company Info */}
+            <div>
+              <img src={logo} alt="Diamond Ridge LLC" className="h-16 mb-4 brightness-0 invert" />
+              <p className="text-gray-300 mb-4">
+                Professional commercial maintenance services you can trust.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                {navItems.map((item) => (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      className="text-gray-300 hover:text-[#D08700] transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Privacy Policy Link */}
+              <div className="mt-6 pt-4 border-t border-gray-700">
+                <Link
+                  to="/privacy-policy"
+                  className="text-gray-300 hover:text-[#D08700] transition-colors text-sm"
+                >
+                  Privacy Policy & Terms
+                </Link>
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+              <div className="flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                <a href="tel:+14648883930" className="hover:text-[#D08700] transition-colors">
+                  (464) 888-3930
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-5 h-5" />
+                <a href="mailto:info@diamondridgellc.us" className="hover:text-[#D08700] transition-colors">
+                  info@diamondridgellc.us
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5" />
+                <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
+                  16733 Vicky Lane, Orland Hills, IL 60487
+                </a>
+              </div>
+            </div>
+
+            {/* Newsletter Signup */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
+              <p className="text-gray-300 mb-4 text-sm">
+                Get maintenance tips & updates from Diamond Ridge.
+              </p>
+              <Link
+                to="/handybook"
+                className="text-gray-300 hover:text-[#D08700] transition-colors text-sm inline-flex items-center gap-1 mb-4"
+              >
+                Read our HandyBook Blog →
+              </Link>
+              <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+                <input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent transition-all"
+                />
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-[#D08700] to-[#B07000] text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                >
+                  {newsletterStatus === "loading" ? (
+                    <Loader className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                  Subscribe
+                </motion.button>
+                {newsletterStatus === "success" && (
+                  <div className="mt-2 text-sm text-[#D08700] flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4" />
+                    {newsletterMessage}
+                  </div>
+                )}
+                {newsletterStatus === "error" && (
+                  <div className="mt-2 text-sm text-red-500 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {newsletterMessage}
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2026 Diamond Ridge LLC. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
