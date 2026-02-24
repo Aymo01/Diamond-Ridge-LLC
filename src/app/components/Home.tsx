@@ -335,7 +335,7 @@ export function Home() {
                 whileTap={{ scale: 0.95 }}
                 className="bg-[#D08700] text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-[#D08700]/90 transition-colors inline-flex items-center gap-2"
               >
-                View All 9 Services
+                              View All 10 Services
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
             </Link>
