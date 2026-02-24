@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+  <polygon points="600,80 950,315 600,550 250,315" fill="#D08700" opacity="0.3"/>
+  <polygon points="600,140 860,315 600,490 340,315" fill="none" stroke="#D08700" stroke-width="4"/>
+  <text x="600" y="290" font-family="Arial" font-weight="bold" font-size="72" fill="white" text-anchor="middle">Diamond Ridge LLC</text>
+  <text x="600" y="370" font-family="Arial" font-size="32" fill="#D08700" text-anchor="middle">Professional Commercial Maintenance</text>
+  <text x="600" y="430" font-family="Arial" font-size="24" fill="#aaaaaa" text-anchor="middle">Orland Hills, IL | Trusted Since 2012</text>
+  <text x="600" y="490" font-family="Arial" font-size="20" fill="#D08700" text-anchor="middle">diamondridgellc.us</text>
+</svg>
