@@ -20,6 +20,7 @@ import locksmithImg from "@/assets/Locksmith.png";
 import hvacImg from "@/assets/HVAC.png";
 import pressureWashingImg from "@/assets/PressureWashing.jpg";
 
+import trashCleaningImg from "@/assets/Trashremoval .jpg";
 export function Services() {
   // v2 - force rebuild
   useEffect(() => {
@@ -188,8 +189,8 @@ export function Services() {
         "Regular maintenance & cleaning programs",
         "Carpet Cleaning",
       ],
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tZXJjaWFsJTIwY2xlYW5pbmclMjBzZXJ2aWNlc3xlbnwxfHx8fDE3NzE0MTQzNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      useImageTag: false,
+      image: trashCleaningImg,
+            useImageTag: true,
     },
   ];
 
