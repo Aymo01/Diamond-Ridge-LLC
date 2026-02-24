@@ -17,6 +17,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useEffect } from "react";
 import locksmithImg from "@/assets/Locksmith.png";
 import hvacImg from "@/assets/HVAC.png";
+import pressureWashingImg from "@/assets/High Pressure Cleaning Service _ Wally's Master Blaster.jpg";
 
 export function Services() {
   useEffect(() => {
@@ -159,8 +160,8 @@ export function Services() {
         "Gum & stain removal",
         "Regular maintenance programs",
       ],
-      image: "https://images.unsplash.com/photo-1762490375799-b33ac874c5ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aW5kb3clMjB3YXNoaW5nJTIwY29tbWVyY2lhbCUyMGJ1aWxkaW5nfGVufDF8fHx8MTc3MTQxNDM2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      useImageTag: false,
+      image: pressureWashingImg,
+      useImageTag: true,
     },
     {
       icon: Trees,
