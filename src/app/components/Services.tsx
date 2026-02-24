@@ -17,7 +17,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useEffect } from "react";
 import locksmithImg from "@/assets/Locksmith.png";
 import hvacImg from "@/assets/HVAC.png";
-import pressureWashingImg from "@/assets/High Pressure Cleaning Service _ Wally's Master Blaster.jpg";
+import pressureWashingImg from "@/assets/PressureWashing.jpg";
 
 export function Services() {
   useEffect(() => {
