@@ -15,7 +15,7 @@ interface StoredReview {
 
 export function Feedback() {
   useEffect(() => {
-    document.title = "Feedback & Reviews | Diamond Ridge LLC";
+    document.title = "Feedback & Reviews | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/feedback');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Share your feedback, file a complaint, or leave a review for Diamond Ridge LLC. We value your input and continuously improve our commercial maintenance services.");
