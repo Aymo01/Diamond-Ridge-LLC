@@ -21,7 +21,7 @@ export function WhyUs() {
     document.title = "Why Choose Us | Diamond Ridge LLC - The Clear Choice";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Discover why 500+ businesses trust Diamond Ridge LLC. Licensed & insured, 24/7 availability, 12+ years experience, competitive pricing, and expert team dedicated to excellence.");
+      metaDescription.setAttribute("content", "Discover why 1000+ businesses trust Diamond Ridge LLC. Licensed & insured, 24/7 availability, 12+ years experience, competitive pricing, and expert team dedicated to excellence.");
     }
   }, []);
 
@@ -173,7 +173,7 @@ export function WhyUs() {
               className="text-xl md:text-2xl text-gray-300 leading-relaxed"
             >
               We don't just <span className="text-white font-bold">maintain</span> your property, we{" "}
-              <span className="text-[#D08700] font-bold">elevate</span> it. Here's why 500+ businesses trust us.
+              <span className="text-[#D08700] font-bold">elevate</span> it. Here's why 1000+ businesses trust us.
             </motion.p>
           </motion.div>
         </div>
@@ -543,7 +543,7 @@ export function WhyUs() {
           >
             <h2 className="text-4xl md:text-6xl mb-6 font-bold">Ready to Experience the Difference?</h2>
             <p className="text-xl md:text-2xl mb-8 leading-relaxed text-white/90">
-              Join the 500+ businesses who trust Diamond Ridge LLC for their commercial maintenance needs
+              Join the 1000+ businesses who trust Diamond Ridge LLC for their commercial maintenance needs
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
