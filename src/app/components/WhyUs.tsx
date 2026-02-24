@@ -18,7 +18,7 @@ import { Link } from "react-router";
 
 export function WhyUs() {
   useEffect(() => {
-    document.title = "Why Choose Us | Diamond Ridge LLC - The Clear Choice";
+    document.title = "Why Choose Us | Diamond Ridge LLC - The Clear Choice"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/why-us');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Discover why 1000+ businesses trust Diamond Ridge LLC. Licensed & insured, 24/7 availability, 12+ years experience, competitive pricing, and expert team dedicated to excellence.");
