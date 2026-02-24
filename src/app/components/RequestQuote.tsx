@@ -6,7 +6,7 @@ import { sendEmail, TEMPLATES } from "../utils/emailjs";
 
 export function RequestQuote() {
   useEffect(() => {
-    document.title = "Request a Free Quote | Diamond Ridge LLC";
+    document.title = "Request a Free Quote | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/quote');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Request a free quote for commercial maintenance services. Fast response within 24 hours. No obligation, detailed estimates for HVAC, electrical, plumbing, and more.");
