@@ -1,0 +1,14 @@
+# Robots.txt for Diamond Ridge LLC
+# https://diamondridgellc.us
+
+User-agent: *
+Allow: /
+
+# Disallow admin/private paths
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://diamondridgellc.us/sitemap.xml
+
+# Crawl delay (optional, be generous to search engines)
+Crawl-delay: 1
