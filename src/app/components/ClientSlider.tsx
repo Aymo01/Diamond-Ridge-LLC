@@ -49,9 +49,9 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
     slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 0,
     cssEase: "linear",
-    pauseOnHover: true,
+    pauseOnHover: false,
     arrows: false,
     responsive: [
       {
@@ -104,7 +104,6 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
           </motion.p>
         </div>
       )}
-
       <div className="py-12 px-4">
         <Slider {...clientSliderSettings}>
           {clientLogos.map((client) => (
