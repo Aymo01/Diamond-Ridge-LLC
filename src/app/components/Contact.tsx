@@ -91,7 +91,7 @@ export function Contact() {
       icon: MapPin,
       title: "Address",
       content: "16733 Vicky Lane, Orland Hills, IL 60487",
-      link: "https://maps.google.com/?q=16733+Vicky+Lane+Orland+Hills+IL+60487",
+      link: "https://maps.google.com/?q=16733+Vicky+Ln,+Orland+Hills,+IL+60487,+USA",
     },
     {
       icon: Phone,
@@ -325,7 +325,7 @@ export function Contact() {
             </div>
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
               <iframe
-                            src="https://www.google.com/maps?q=16733+Vicky+Lane,+Orland+Hills,+IL+60487&output=embed"
+                            src="https://www.google.com/maps?q=16733+Vicky+Ln,+Orland+Hills,+IL+60487,+USA,+Orland+Hills,+IL+60487&output=embed"
                 width="100%"
                 className="h-80 md:h-96"
                 style={{ border: 0 }}
