@@ -1,13 +1,13 @@
 // EmailJS is loaded via CDN in index.html - available as window.emailjs
 // Credentials are public-facing keys (safe to expose in frontend)
-const EMAILJS_PUBLIC_KEY = "vO_FcsFZz7ixzIKCx";
-const EMAILJS_SERVICE_ID = "service_ainymgg";
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? "vO_FcsFZz7ixzIKCx";
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "service_ainymgg";
 
 export const TEMPLATES = {
-  QUOTE: "template_au816lt",
-  CONTACT: "template_h9h83ha",
-  FEEDBACK: "template_cb2iv4k",
-  NEWSLETTER: ""
+  QUOTE: import.meta.env.VITE_EMAILJS_TEMPLATE_QUOTE ?? "template_au816lt",
+  CONTACT: import.meta.env.VITE_EMAILJS_TEMPLATE_CONTACT ?? "template_h9h83ha",
+  FEEDBACK: import.meta.env.VITE_EMAILJS_TEMPLATE_FEEDBACK ?? "template_cb2iv4k",
+  NEWSLETTER: import.meta.env.VITE_EMAILJS_TEMPLATE_NEWSLETTER ?? import.meta.env.VITE_EMAILJS_TEMPLATE_CONTACT ?? "template_h9h83ha"
 };
 
 // Initialize EmailJS once
