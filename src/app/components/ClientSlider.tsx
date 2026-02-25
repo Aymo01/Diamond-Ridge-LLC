@@ -2,7 +2,6 @@ import { motion } from "motion/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 // Import original client logos
 import bathBodyWorksLogo from "@/assets/Bath&bodylogo.png";
 import burlingtonLogo from "@/assets/Burlingtonlogo.png";
@@ -17,7 +16,6 @@ import targetLogo from "@/assets/Targetlogo.png";
 import tractorSupplyLogo from "@/assets/Tractorsupplylogo.png";
 import walgreensLogo from "@/assets/Walgreenslogo.png";
 import walmartLogo from "@/assets/Walmartlogo.png";
-
 // Import new client logos
 import sproutsLogo from "@/assets/SFM.png";
 import cvsLogo from "@/assets/CVS Pharmacy.png";
@@ -45,7 +43,6 @@ interface ClientSliderProps {
 }
 
 export function ClientSlider({ showHeader = true, className = "" }: ClientSliderProps) {
-  // Client logos data
   const clientLogos = [
     { name: "Bath & Body Works", logo: bathBodyWorksLogo },
     { name: "Burlington", logo: burlingtonLogo },
@@ -81,7 +78,6 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
     { name: "Arby's", logo: arbysLogo },
   ];
 
-  // Client logos slider settings
   const clientSliderSettings = {
     dots: false,
     infinite: true,
@@ -144,18 +140,18 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
           </motion.p>
         </div>
       )}
-      <div className="py-12 px-4">
+      <div className="py-8 px-4">
         <Slider {...clientSliderSettings}>
           {clientLogos.map((client) => (
-            <div key={client.name} className="px-2 sm:px-4">
+            <div key={client.name} className="px-3">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="flex items-center justify-center w-[140px] sm:w-[160px] md:w-[180px] h-[80px] sm:h-[90px] md:h-[100px]"
+                className="flex items-center justify-center bg-white rounded-2xl shadow-sm border border-gray-100 h-24 px-4 py-3 mx-1"
               >
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="w-full h-full object-contain p-2 transition-all duration-300"
+                  className="max-h-14 max-w-[130px] w-auto h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                 />
               </motion.div>
             </div>
