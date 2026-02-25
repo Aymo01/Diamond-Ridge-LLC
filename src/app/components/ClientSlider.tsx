@@ -155,11 +155,7 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className={`${
-                    client.name === "Dollar Tree" 
-                      ? "w-32 h-18 sm:w-36 sm:h-20 md:w-40 md:h-22" 
-                      : "w-28 h-14 sm:w-32 sm:h-16 md:w-36 md:h-18"
-                  } object-contain transition-all duration-300`}
+                  className="h-10 sm:h-12 md:h-14 w-auto max-w-[140px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-all duration-300"
                 />
               </motion.div>
             </div>
