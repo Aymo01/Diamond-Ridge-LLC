@@ -325,7 +325,7 @@ export function Contact() {
             </div>
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.123456789!2d-87.85123456789!3d41.60123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDM2JzA0LjQiTiA4N8KwNTEnMDQuNCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus&q=16733+Vicky+Lane,+Orland+Hills,+IL+60487"
+                            src="https://www.google.com/maps?q=16733+Vicky+Lane,+Orland+Hills,+IL+60487&output=embed"
                 width="100%"
                 className="h-80 md:h-96"
                 style={{ border: 0 }}
