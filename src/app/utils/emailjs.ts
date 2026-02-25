@@ -1,4 +1,5 @@
-// EmailJS is loaded via CDN in index.html - available as window.emailjs
+import emailjs from "@emailjs/browser";
+
 // Credentials are public-facing keys (safe to expose in frontend)
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? "vO_FcsFZz7ixzIKCx";
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "service_ainymgg";
@@ -14,8 +15,8 @@ export const TEMPLATES = {
 let isInitialized = false;
 
 const initializeEmailJS = () => {
-  if (!isInitialized && typeof window !== 'undefined' && window.emailjs?.init) {
-    window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  if (!isInitialized) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
     isInitialized = true;
   }
 };
@@ -23,6 +24,10 @@ const initializeEmailJS = () => {
 // Send email function
 export const sendEmail = async (templateId: string, templateParams: Record<string, any>) => {
   try {
+    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID) {
+      throw new Error("EmailJS key/service is missing.");
+    }
+
     if (!templateId) {
       throw new Error("EmailJS template ID is missing.");
     }
@@ -30,12 +35,7 @@ export const sendEmail = async (templateId: string, templateParams: Record<strin
     // Ensure EmailJS is initialized
     initializeEmailJS();
 
-    // Check if emailjs is available
-    if (typeof window === 'undefined' || !window.emailjs) {
-      throw new Error('EmailJS CDN not loaded. Please check your internet connection.');
-    }
-
-    const response = await window.emailjs.send(
+    const response = await emailjs.send(
       EMAILJS_SERVICE_ID,
       templateId,
       templateParams
