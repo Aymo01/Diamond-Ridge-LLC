@@ -364,6 +364,7 @@ export function Layout() {
           </div>
         </div>
       </footer>
+            </div>
     
   );
 }
