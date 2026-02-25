@@ -150,12 +150,12 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
             <div key={client.name} className="px-2 sm:px-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="flex items-center justify-center h-24 sm:h-28 md:h-32"
+                className="flex items-center justify-center w-[140px] sm:w-[160px] md:w-[180px] h-[80px] sm:h-[90px] md:h-[100px]"
               >
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-10 sm:h-12 md:h-14 w-auto max-w-[140px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-all duration-300"
+                  className="w-full h-full object-contain p-2 transition-all duration-300"
                 />
               </motion.div>
             </div>
