@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Import client logos
+// Import original client logos
 import bathBodyWorksLogo from "@/assets/Bath&bodylogo.png";
 import burlingtonLogo from "@/assets/Burlingtonlogo.png";
 import carvanaLogo from "@/assets/Carvanalogo.png";
@@ -17,6 +17,27 @@ import targetLogo from "@/assets/Targetlogo.png";
 import tractorSupplyLogo from "@/assets/Tractorsupplylogo.png";
 import walgreensLogo from "@/assets/Walgreenslogo.png";
 import walmartLogo from "@/assets/Walmartlogo.png";
+
+// Import new client logos
+import sproutsLogo from "@/assets/SFM.png";
+import cvsLogo from "@/assets/CVS Pharmacy.png";
+import allstateLogo from "@/assets/AllState Insurance.png";
+import xpoLogo from "@/assets/XPo-removebg-preview.png";
+import freewayLogo from "@/assets/Freeway.png";
+import hangerLogo from "@/assets/Hanger-removebg-preview.png";
+import booksLogo from "@/assets/Books-removebg-preview.png";
+import rossLogo from "@/assets/Ross-removebg-preview.png";
+import bofaLogo from "@/assets/BofA-removebg-preview.png";
+import tacoLogo from "@/assets/taco-removebg-preview.png";
+import lowesLogo from "@/assets/Lowe_s-removebg-preview.png";
+import pmLogo from "@/assets/PM-removebg-preview.png";
+import hardeesLogo from "@/assets/Hardee_s-removebg-preview.png";
+import kneadersLogo from "@/assets/kneaders-removebg-preview.png";
+import gostoreitLogo from "@/assets/Go_Store_It-removebg-preview.png";
+import upsLogo from "@/assets/UPS (2).png";
+import atHomeLogo from "@/assets/AT_Home-removebg-preview.png";
+import goodwillLogo from "@/assets/Goodwill-removebg-preview.png";
+import arbysLogo from "@/assets/Arby's.png";
 
 interface ClientSliderProps {
   showHeader?: boolean;
@@ -39,6 +60,25 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
     { name: "Tractor Supply Co", logo: tractorSupplyLogo },
     { name: "Walgreens", logo: walgreensLogo },
     { name: "Walmart", logo: walmartLogo },
+    { name: "Sprouts Farmers Market", logo: sproutsLogo },
+    { name: "CVS Pharmacy", logo: cvsLogo },
+    { name: "Allstate", logo: allstateLogo },
+    { name: "XPO Logistics", logo: xpoLogo },
+    { name: "Freeway Insurance", logo: freewayLogo },
+    { name: "Hanger Clinic", logo: hangerLogo },
+    { name: "Books-A-Million", logo: booksLogo },
+    { name: "Ross Dress for Less", logo: rossLogo },
+    { name: "Bank of America", logo: bofaLogo },
+    { name: "Taco Bell", logo: tacoLogo },
+    { name: "Lowe's", logo: lowesLogo },
+    { name: "Pediatric Care", logo: pmLogo },
+    { name: "Hardee's", logo: hardeesLogo },
+    { name: "Kneaders Bakery & Cafe", logo: kneadersLogo },
+    { name: "GoStoreIt", logo: gostoreitLogo },
+    { name: "UPS", logo: upsLogo },
+    { name: "At Home", logo: atHomeLogo },
+    { name: "Goodwill", logo: goodwillLogo },
+    { name: "Arby's", logo: arbysLogo },
   ];
 
   // Client logos slider settings
