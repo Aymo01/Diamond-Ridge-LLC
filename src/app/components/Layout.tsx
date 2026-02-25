@@ -9,11 +9,13 @@ import { sendEmail, TEMPLATES } from "../utils/emailjs";
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  import { AdminPanel } from "./AdminPanel";
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [newsletterMessage, setNewsletterMessage] = useState("");
   const location = useLocation();
+    const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +30,18 @@ export function Layout() {
     setMobileMenuOpen(false);
     window.scrollTo(0, 0);
   }, [location]);
+
+    // Keyboard shortcut: Ctrl+Shift+X to open Admin Panel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'X') {
+        e.preventDefault();
+        setShowAdminPanel(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -351,6 +365,21 @@ export function Layout() {
           </div>
         </div>
       </footer>
+    
+      {/* Admin Panel Modal (Ctrl+Shift+X) */}
+      {showAdminPanel && (
+        <div className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative w-full max-w-7xl max-h-[90vh] overflow-auto bg-white rounded-2xl shadow-2xl">
+            <button
+              onClick={() => setShowAdminPanel(false)}
+              className="absolute top-4 right-4 z-10 bg-gray-900 text-white p-2 rounded-full hover:bg-gray-700 transition-colors"
+            >
+              <X size={24} />
+            </button>
+            <AdminPanel />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
