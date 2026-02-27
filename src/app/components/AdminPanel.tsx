@@ -13,7 +13,7 @@ interface StoredReview {
 }
 
 // IMPORTANT: Change this password! Store in environment variable for production
-const ADMIN_PASSWORD = "diamond2024";
+const ADMIN_PASSWORD = "DAdmin770500";
 
 export function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
