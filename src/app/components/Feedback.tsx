@@ -2,20 +2,13 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { Star, Send, CheckCircle, AlertCircle, MessageCircle, Heart, X, Loader } from "lucide-react";
 import { sendEmail, TEMPLATES } from "../utils/emailjs";
-
-interface StoredReview {
-  id: number;
-  name: string;
-  rating: number;
-  service: string;
-  comment: string;
-  date: string;
-  approved: boolean;
-}
+import { getApprovedReviews, submitReview, type Review } from "../utils/supabaseReviews";
 
 export function Feedback() {
   useEffect(() => {
-    document.title = "Feedback & Reviews | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/feedback');
+    document.title = "Feedback & Reviews | Diamond Ridge LLC";
+    const c = document.querySelector('link[rel="canonical"]');
+    if (c) c.setAttribute('href', 'https://diamondridgellc.us/feedback');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Share your feedback, file a complaint, or leave a review for Diamond Ridge LLC. We value your input and continuously improve our commercial maintenance services.");
@@ -32,30 +25,26 @@ export function Feedback() {
     subject: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
   const [submittedType, setSubmittedType] = useState("");
   const [hoveredStar, setHoveredStar] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [reviews, setReviews] = useState<StoredReview[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
-  // Load reviews from localStorage
+  // Load reviews from Supabase
   useEffect(() => {
-    const loadReviews = () => {
-      const stored = localStorage.getItem("diamondridge_reviews");
-      if (stored) {
-        try {
-          const allReviews: StoredReview[] = JSON.parse(stored);
-          // Only show approved reviews
-          const approvedReviews = allReviews.filter(r => r.approved);
-          // Sort by date, newest first, and take max 6
-          const sortedReviews = approvedReviews
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .slice(0, 6);
-          setReviews(sortedReviews);
-        } catch (e) {
-          console.error("Error loading reviews:", e);
-        }
+    const loadReviews = async () => {
+      try {
+        const approvedReviews = await getApprovedReviews();
+        // Sort by date, newest first, and take max 6
+        const sortedReviews = approvedReviews
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .slice(0, 6);
+        setReviews(sortedReviews);
+      } catch (e) {
+        console.error("Error loading reviews:", e);
       }
     };
     loadReviews();
@@ -66,10 +55,9 @@ export function Feedback() {
     setLoading(true);
     setError("");
     
-    // Store the type before sending
     setSubmittedType(formData.type);
     
-    // Prepare template parameters for EmailJS
+    // 1. Send email notification via EmailJS
     const templateParams = {
       from_name: formData.name,
       from_email: formData.email,
@@ -81,33 +69,25 @@ export function Feedback() {
       form_type: formData.type === "feedback" ? "Customer Feedback" : formData.type === "complaint" ? "Complaint" : "Review",
     };
 
-    // Send email via EmailJS
-    const result = await sendEmail(TEMPLATES.FEEDBACK, templateParams);
-
-    setLoading(false);
-
-    if (result.success) {
-      // If it's a review, save to localStorage
+    const emailResult = await sendEmail(TEMPLATES.FEEDBACK, templateParams);
+    
+    if (emailResult.success) {
+      // 2. If it's a review, save to Supabase
       if (formData.type === "review" && formData.rating > 0) {
-        const newReview: StoredReview = {
-          id: Date.now(),
-          name: formData.name,
-          rating: formData.rating,
-          service: formData.service || "General Service",
-          comment: formData.message,
-          date: new Date().toISOString(),
-          approved: false, // Admin needs to approve
-        };
-        
-        // Save to localStorage
-        const stored = localStorage.getItem("diamondridge_reviews");
-        const existingReviews: StoredReview[] = stored ? JSON.parse(stored) : [];
-        existingReviews.push(newReview);
-        localStorage.setItem("diamondridge_reviews", JSON.stringify(existingReviews));
+        try {
+          await submitReview({
+            name: formData.name,
+            rating: formData.rating,
+            service: formData.service || "General Service",
+            comment: formData.message,
+          });
+        } catch (err) {
+          console.error("Failed to save review to Supabase:", err);
+          // We still show success since the email went through, but log the error
+        }
       }
       
       setSubmitted(true);
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -121,6 +101,7 @@ export function Feedback() {
     } else {
       setError("Failed to send feedback. Please try again.");
     }
+    setLoading(false);
   };
 
   const handleChange = (
@@ -200,7 +181,6 @@ export function Feedback() {
             </div>
 
             {reviews.length === 0 ? (
-              // No reviews yet
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -217,7 +197,6 @@ export function Feedback() {
                 </p>
               </motion.div>
             ) : (
-              // Display reviews in a grid
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                 {reviews.map((review, index) => (
                   <motion.div
@@ -227,7 +206,6 @@ export function Feedback() {
                     transition={{ delay: index * 0.1 }}
                     className="bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] rounded-2xl shadow-xl p-6 border-2 border-[#D08700]/30"
                   >
-                    {/* Rating Stars */}
                     <div className="flex gap-1 mb-4">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
@@ -240,20 +218,14 @@ export function Feedback() {
                         />
                       ))}
                     </div>
-
-                    {/* Comment */}
                     <p className="text-white text-base mb-4 leading-relaxed">
                       "{review.comment}"
                     </p>
-
-                    {/* Service Badge */}
                     <div className="mb-4">
                       <span className="inline-block bg-[#D08700]/20 text-[#D08700] px-3 py-1 rounded-full text-sm font-semibold">
                         {review.service}
                       </span>
                     </div>
-
-                    {/* Reviewer Info */}
                     <div className="border-t border-[#D08700]/20 pt-4">
                       <p className="text-white font-bold text-lg">
                         {review.name}
@@ -280,11 +252,7 @@ export function Feedback() {
           >
             {!submitted ? (
               <form onSubmit={handleSubmit} className="space-y-6" id="feedback-form">
-                {/* Type Selection */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                   <label className="block text-gray-700 font-semibold mb-3 text-lg">
                     What would you like to share? *
                   </label>
@@ -318,12 +286,9 @@ export function Feedback() {
                   </div>
                 </motion.div>
 
-                {/* Name, Email, Phone */}
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Name *
-                    </label>
+                    <label className="block text-gray-700 font-semibold mb-2">Name *</label>
                     <input
                       type="text"
                       name="name"
@@ -334,11 +299,8 @@ export function Feedback() {
                       placeholder="Your name"
                     />
                   </div>
-
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Email *
-                    </label>
+                    <label className="block text-gray-700 font-semibold mb-2">Email *</label>
                     <input
                       type="email"
                       name="email"
@@ -349,11 +311,8 @@ export function Feedback() {
                       placeholder="your@email.com"
                     />
                   </div>
-
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Phone
-                    </label>
+                    <label className="block text-gray-700 font-semibold mb-2">Phone</label>
                     <input
                       type="tel"
                       name="phone"
@@ -365,15 +324,9 @@ export function Feedback() {
                   </div>
                 </div>
 
-                {/* Service Selection (show for reviews) */}
                 {formData.type === "review" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                  >
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Service Used *
-                    </label>
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                    <label className="block text-gray-700 font-semibold mb-2">Service Used *</label>
                     <select
                       name="service"
                       value={formData.service}
@@ -396,15 +349,9 @@ export function Feedback() {
                   </motion.div>
                 )}
 
-                {/* Rating (show for feedback and review) */}
                 {(formData.type === "feedback" || formData.type === "review") && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                  >
-                    <label className="block text-gray-700 font-semibold mb-3">
-                      How would you rate your experience? *
-                    </label>
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                    <label className="block text-gray-700 font-semibold mb-3">How would you rate your experience? *</label>
                     <div className="flex gap-2 justify-center md:justify-start">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <motion.button
@@ -439,11 +386,8 @@ export function Feedback() {
                   </motion.div>
                 )}
 
-                {/* Subject */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    Subject *
-                  </label>
+                  <label className="block text-gray-700 font-semibold mb-2">Subject *</label>
                   <input
                     type="text"
                     name="subject"
@@ -451,15 +395,10 @@ export function Feedback() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
-                    placeholder={
-                      formData.type === "complaint"
-                        ? "Brief description of your concern"
-                        : "What is this about?"
-                    }
+                    placeholder={formData.type === "complaint" ? "Brief description of your concern" : "What is this about?"}
                   />
                 </div>
 
-                {/* Message */}
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
                     {formData.type === "complaint" ? "Complaint Details" : "Your Message"} *
@@ -471,25 +410,16 @@ export function Feedback() {
                     required
                     rows={6}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all resize-none"
-                    placeholder={
-                      formData.type === "complaint"
-                        ? "Please provide as much detail as possible about your concern..."
-                        : "Share your thoughts with us..."
-                    }
+                    placeholder={formData.type === "complaint" ? "Please provide as much detail as possible about your concern..." : "Share your thoughts with us..."}
                   />
                 </div>
 
-                {/* Privacy Notice */}
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-600">
-                    <strong>Privacy Notice:</strong> Your information will be kept
-                    confidential and used only to respond to your {formData.type}. We
-                    take all feedback seriously and are committed to continuous
-                    improvement.
+                    <strong>Privacy Notice:</strong> Your information will be kept confidential and used only to respond to your {formData.type}.
                   </p>
                 </div>
 
-                {/* Submit Button */}
                 <motion.button
                   type="submit"
                   disabled={loading}
@@ -510,122 +440,50 @@ export function Feedback() {
                   )}
                 </motion.button>
 
-                {/* Error Message */}
                 {error && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 p-4 bg-red-50 border-2 border-red-500 rounded-lg flex items-center gap-3 text-red-700"
-                  >
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 bg-red-50 border-2 border-red-500 rounded-lg flex items-center gap-3 text-red-700">
                     <X className="w-5 h-5 flex-shrink-0" />
                     <p className="font-semibold">{error}</p>
                   </motion.div>
                 )}
               </form>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12"
-              >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.1, type: "spring" }}
-                  className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
-                >
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1, type: "spring" }} className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle className="w-10 h-10 text-green-600" />
                 </motion.div>
                 
                 {submittedType === "review" ? (
                   <>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring" }}
-                      className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
-                      <Star className="w-8 h-8 text-yellow-600 fill-yellow-600" />
-                    </motion.div>
                     <h3 className="text-3xl font-bold mb-4 text-gray-900">Thank You for Your Review!</h3>
-                    <p className="text-xl text-gray-600 mb-4">
-                      Your feedback helps us improve and serves as a testament to our work.
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Your review will appear here after admin approval.
-                    </p>
+                    <p className="text-xl text-gray-600 mb-4">Your feedback helps us improve and serves as a testament to our work.</p>
+                    <p className="text-sm text-gray-500">Your review will appear here after admin approval.</p>
                   </>
                 ) : submittedType === "complaint" ? (
                   <>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring" }}
-                      className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
-                      <AlertCircle className="w-8 h-8 text-red-600" />
-                    </motion.div>
                     <h3 className="text-3xl font-bold mb-4 text-gray-900">Complaint Received</h3>
-                    <p className="text-xl text-gray-600">
-                      We take all complaints seriously and will respond within 24 hours.
-                    </p>
+                    <p className="text-xl text-gray-600">We take all complaints seriously and will respond within 24 hours.</p>
                   </>
                 ) : (
                   <>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring" }}
-                      className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
-                      <Heart className="w-8 h-8 text-blue-600" />
-                    </motion.div>
                     <h3 className="text-3xl font-bold mb-4 text-gray-900">Feedback Received!</h3>
-                    <p className="text-xl text-gray-600">
-                      Thank you for helping us improve our services.
-                    </p>
+                    <p className="text-xl text-gray-600">Thank you for helping us improve our services.</p>
                   </>
                 )}
                 
-                <motion.button
-                  onClick={handleReset}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-8 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-                >
+                <motion.button onClick={handleReset} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-8 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all">
                   Submit Another
                 </motion.button>
-                
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.3, duration: 0.4 }}
-                  className="mt-6 h-1 w-24 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full mx-auto"
-                />
               </motion.div>
             )}
           </motion.div>
 
-          {/* Additional Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-12 max-w-4xl mx-auto"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-12 max-w-4xl mx-auto">
             <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 text-white text-center">
-              <h3 className="text-2xl font-semibold mb-4">
-                Have an urgent concern?
-              </h3>
-              <p className="text-gray-300 mb-6">
-                For immediate assistance or urgent complaints, please call us directly.
-              </p>
+              <h3 className="text-2xl font-semibold mb-4">Have an urgent concern?</h3>
+              <p className="text-gray-300 mb-6">For immediate assistance or urgent complaints, please call us directly.</p>
               <a href="tel:4648883930">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-yellow-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-700 transition-colors"
-                >
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="bg-yellow-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-700 transition-colors">
                   Call Us: (464) 888-3930
                 </motion.button>
               </a>
