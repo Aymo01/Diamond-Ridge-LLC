@@ -18,29 +18,29 @@ export interface BlogPost {
 // Base URL for blog API
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-ab2b18df/blog`;
 
+// Storage API base
+const STORAGE_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-ab2b18df/storage`;
+
 // Helper function to make authenticated requests
-async function apiRequest(endpoint: string, options: RequestInit = {}) {
+async function apiRequest(endpoint: string, options: RequestInit = {}, adminSecret?: string) {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${publicAnonKey}`,
+      ...(adminSecret ? { 'x-admin-secret': adminSecret } : {}),
       ...options.headers,
     },
   });
-
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Unknown error' }));
     throw new Error(error.error || `HTTP ${response.status}`);
   }
-
   return response.json();
 }
 
 /**
  * Generate a URL-friendly slug from a title
- * @param title - The blog post title
- * @returns A URL-friendly slug
  */
 export function generateSlug(title: string): string {
   return title
@@ -50,12 +50,11 @@ export function generateSlug(title: string): string {
 }
 
 /**
- * Fetch all blog posts (published and drafts)
- * @returns Array of all blog posts ordered by created_at desc
+ * Fetch all blog posts (admin - includes drafts)
  */
-export async function getAllPosts(): Promise<BlogPost[]> {
+export async function getAllPosts(adminSecret: string): Promise<BlogPost[]> {
   try {
-    const result = await apiRequest('/posts');
+    const result = await apiRequest('/posts', {}, adminSecret);
     return result.data || [];
   } catch (error) {
     console.error('Error fetching all posts:', error);
@@ -65,8 +64,6 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
 /**
  * Fetch all published blog posts, optionally filtered by category
- * @param category - Optional category to filter by
- * @returns Array of published blog posts ordered by created_at desc
  */
 export async function getPublishedPosts(category?: string): Promise<BlogPost[]> {
   try {
@@ -81,8 +78,6 @@ export async function getPublishedPosts(category?: string): Promise<BlogPost[]> 
 
 /**
  * Fetch a single blog post by slug
- * @param slug - The blog post slug
- * @returns The blog post or null if not found
  */
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
@@ -95,18 +90,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 /**
- * Create a new blog post
- * @param postData - The blog post data (without id, created_at, updated_at)
- * @returns The created blog post or null if creation failed
+ * Create a new blog post (admin)
  */
 export async function createPost(
-  postData: Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>
+  postData: Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>,
+  adminSecret: string
 ): Promise<BlogPost | null> {
   try {
     const result = await apiRequest('/posts', {
       method: 'POST',
       body: JSON.stringify(postData),
-    });
+    }, adminSecret);
     return result.data || null;
   } catch (error) {
     console.error('Error creating post:', error);
@@ -115,20 +109,18 @@ export async function createPost(
 }
 
 /**
- * Update an existing blog post
- * @param id - The blog post ID
- * @param updates - The fields to update
- * @returns The updated blog post or null if update failed
+ * Update an existing blog post (admin)
  */
 export async function updatePost(
   id: string,
-  updates: Partial<Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>>
+  updates: Partial<Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>>,
+  adminSecret: string
 ): Promise<BlogPost | null> {
   try {
     const result = await apiRequest(`/posts/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
-    });
+    }, adminSecret);
     return result.data || null;
   } catch (error) {
     console.error('Error updating post:', error);
@@ -137,18 +129,42 @@ export async function updatePost(
 }
 
 /**
- * Delete a blog post
- * @param id - The blog post ID
- * @returns true if deletion was successful, false otherwise
+ * Delete a blog post (admin)
  */
-export async function deletePost(id: string): Promise<boolean> {
+export async function deletePost(id: string, adminSecret: string): Promise<boolean> {
   try {
     await apiRequest(`/posts/${id}`, {
       method: 'DELETE',
-    });
+    }, adminSecret);
     return true;
   } catch (error) {
     console.error('Error deleting post:', error);
     return false;
+  }
+}
+
+/**
+ * Upload a cover image for a blog post
+ */
+export async function uploadBlogImage(file: File): Promise<string | null> {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${STORAGE_BASE}/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${publicAnonKey}`,
+      },
+      body: formData,
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Upload failed' }));
+      throw new Error(error.error || 'Upload failed');
+    }
+    const result = await response.json();
+    return result.url || null;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    return null;
   }
 }
