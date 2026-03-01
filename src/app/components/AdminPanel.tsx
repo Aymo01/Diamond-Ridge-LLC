@@ -450,7 +450,7 @@ export function AdminPanel() {
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Author</label>
                         <input 
-                          type="text" Fix #3 & #4: Add 15min admin session timeout and update HandyBook categories
+                          type="text
                           value={editingPost.author || "Diamond Ridge Team"}
                           onChange={(e) => setEditingPost({...editingPost, author: e.target.value})}
                           className="w-full p-4 bg-slate-50 rounded-xl border-none focus:ring-0 text-sm font-bold text-slate-900"
