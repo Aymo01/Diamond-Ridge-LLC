@@ -387,7 +387,7 @@ export function AdminPanel() {
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-slate-500 uppercase tracking-widest">Headline</label>
                     <input 
-                      type="text" 
+                      type="text"" 
                       value={editingPost.title}
                       onChange={(e) => setEditingPost({...editingPost, title: e.target.value})}
                       className="w-full text-4xl font-extrabold text-slate-900 border-none focus:ring-0 p-0 placeholder:text-slate-200"
@@ -450,7 +450,7 @@ export function AdminPanel() {
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Author</label>
                         <input 
-                          type="text
+                          type="text""
                           value={editingPost.author || "Diamond Ridge Team"}
                           onChange={(e) => setEditingPost({...editingPost, author: e.target.value})}
                           className="w-full p-4 bg-slate-50 rounded-xl border-none focus:ring-0 text-sm font-bold text-slate-900"
