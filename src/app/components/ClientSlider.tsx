@@ -146,7 +146,7 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
             <div key={client.name} className="px-3">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="flex items-center justify-center bg-white rounded-2xl shadow-sm border border-gray-100 h-24 px-4 py-3 mx-1"
+                className="flex items-center justify-center h-24 px-4 py-3 mx-1"
               >
                 <img
                   src={client.logo}
