@@ -111,7 +111,7 @@ export function ClientSlider({ showHeader = true, className = "" }: ClientSlider
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
         },
       },
     ],
