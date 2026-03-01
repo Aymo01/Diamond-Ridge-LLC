@@ -12,7 +12,7 @@ const dummyPosts = [
     slug: "hvac-maintenance-best-practices",
     excerpt: "Learn essential tips for keeping your commercial HVAC system running efficiently year-round.",
     content: null,
-    category: "Maintenance Tips",
+    category: "",
     cover_image: null,
     author: "Diamond Ridge LLC",
     published: false,
@@ -25,7 +25,7 @@ const dummyPosts = [
     slug: "5-signs-plumbing-needs-attention",
     excerpt: "Discover warning signs that indicate your commercial plumbing system requires professional service.",
     content: null,
-    category: "Maintenance Tips",
+    category: "",
     cover_image: null,
     author: "Diamond Ridge LLC",
     published: false,
@@ -36,9 +36,9 @@ const dummyPosts = [
     id: "dummy-3",
     title: "Commercial Landscaping Tips for Spring",
     slug: "commercial-landscaping-tips-spring",
-    excerpt: "Get your commercial property's landscape ready for spring with these expert maintenance tips.",
+    excerpt: "Get your commercial property's landscape ready for spring with these expert .",
     content: null,
-    category: "Maintenance Tips",
+    category: "",
     cover_image: null,
     author: "Diamond Ridge LLC",
     published: false,
@@ -55,13 +55,13 @@ export function HandyBook() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ["All", "Maintenance Tips", "Industry News", "Company Updates"];
+  const categories = ["All", "Maintenance tips", "Industry news"];
 
   useEffect(() => {
     document.title = "HandyBook - Expert Tips & Maintenance Insights | Diamond Ridge LLC"; const c = document.querySelector('link[rel="canonical"]'); if(c) c.setAttribute('href','https://diamondridgellc.us/handybook');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Expert maintenance tips, insights, and guides from Diamond Ridge LLC professionals. Learn about HVAC, plumbing, electrical, and more.");
+      metaDescription.setAttribute("content", "Expert , insights, and guides from Diamond Ridge LLC professionals. Learn about HVAC, plumbing, electrical, and more.");
     }
   }, []);
 
@@ -79,9 +79,9 @@ export function HandyBook() {
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      "Maintenance Tips": "bg-blue-100 text-blue-700",
-      "Industry News": "bg-purple-100 text-purple-700",
-      "Company Updates": "bg-orange-100 text-orange-700",
+      "": "bg-blue-100 text-blue-700",
+      "": "bg-purple-100 text-purple-700",
+    
     };
     return colors[category] || "bg-gray-100 text-gray-700";
   };
@@ -262,7 +262,7 @@ export function HandyBook() {
                   Coming Soon
                 </h3>
                 <p className="text-gray-300 text-lg">
-                  Our expert team is preparing valuable maintenance tips and insights for you!
+                  Our expert team is preparing valuable  and insights for you!
                 </p>
               </motion.div>
             </div>
