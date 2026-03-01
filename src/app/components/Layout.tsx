@@ -115,7 +115,7 @@ export function Layout() {
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1, y: -2 }}
           whileTap={{ scale: 0.9 }}
-          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all"
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all border border-white"
           style={{ backgroundColor: '#111929', color: 'white' }}
         >
           <Instagram size={24} />
@@ -126,7 +126,7 @@ export function Layout() {
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1, y: -2 }}
           whileTap={{ scale: 0.9 }}
-          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all"
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all border border-white"
           style={{ backgroundColor: '#111929', color: 'white' }}
         >
           <Facebook size={24} />
