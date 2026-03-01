@@ -17,6 +17,7 @@ import {
 
 // IMPORTANT: In production, this should be an environment variable or a more secure system
 const ADMIN_PASSWORD = "DAdmin770500";
+const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 type Tab = "dashboard" | "blog" | "reviews";
 
@@ -28,7 +29,7 @@ export function AdminPanel() {
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [loading, setLoading] = useState(false);
   const [adminSecret, setAdminSecret] = useState("");
-
+  
   // Blog State
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editingPost, setEditingPost] = useState<Partial<BlogPost> | null>(null);
@@ -37,6 +38,25 @@ export function AdminPanel() {
 
   // Reviews State
   const [reviews, setReviews] = useState<Review[]>([]);
+
+  // Session Timeout Effect
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isAuthenticated) {
+      // Set a timer to logout after 15 minutes of being authenticated
+      timeout = setTimeout(() => {
+        setIsAuthenticated(false);
+        setAdminSecret("");
+        setPassword("");
+        alert("Admin session expired. Please re-sign in.");
+      }, SESSION_TIMEOUT);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     document.title = "Admin Portal | Diamond Ridge LLC";
@@ -91,7 +111,7 @@ export function AdminPanel() {
         slug: editingPost.slug || generateSlug(editingPost.title),
         excerpt: editingPost.excerpt || "",
         content: editingPost.content || "",
-        category: editingPost.category || "General",
+        category: editingPost.category || "Maintenance tips",
         cover_image: editingPost.cover_image || null,
         author: editingPost.author || "Diamond Ridge Team",
         published: editingPost.published ?? false,
@@ -232,7 +252,7 @@ export function AdminPanel() {
           <div className="flex gap-4">
             {activeTab === "blog" && (
               <button 
-                onClick={() => setEditingPost({ title: "", content: "", author: "Diamond Ridge Team", published: false })}
+                onClick={() => setEditingPost({ title: "", content: "", author: "Diamond Ridge Team", published: false, category: "Maintenance tips" })}
                 className="flex items-center gap-2 px-6 py-3 bg-[#D08700] text-white rounded-xl font-bold hover:bg-[#B07000] shadow-lg shadow-[#D08700]/20 transition-all"
               >
                 <Plus size={20} /> New Post
@@ -329,10 +349,10 @@ export function AdminPanel() {
                     </div>
                     <p className="text-slate-600 leading-relaxed">"{review.comment}"</p>
                     <div className="mt-3 flex items-center gap-4">
-                       <span className="text-xs font-bold text-[#D08700] uppercase tracking-wider">{review.service}</span>
-                       <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded ${review.approved ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
-                         {review.approved ? 'Approved' : 'Pending Moderation'}
-                       </span>
+                      <span className="text-xs font-bold text-[#D08700] uppercase tracking-wider">{review.service}</span>
+                      <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded ${review.approved ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
+                        {review.approved ? 'Approved' : 'Pending Moderation'}
+                      </span>
                     </div>
                   </div>
                   <div className="flex gap-3">
@@ -362,7 +382,6 @@ export function AdminPanel() {
                   <X size={28} />
                 </button>
               </div>
-
               <div className="grid md:grid-cols-3 gap-10">
                 <div className="md:col-span-2 space-y-8">
                   <div className="space-y-2">
@@ -375,7 +394,6 @@ export function AdminPanel() {
                       placeholder="Your article title here..."
                     />
                   </div>
-
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-slate-500 uppercase tracking-widest">Content Body (Markdown Supported)</label>
                     <textarea 
@@ -387,7 +405,6 @@ export function AdminPanel() {
                     />
                   </div>
                 </div>
-
                 <div className="space-y-8">
                   <div className="space-y-4">
                     <label className="text-sm font-bold text-slate-500 uppercase tracking-widest">Featured Image</label>
@@ -408,7 +425,6 @@ export function AdminPanel() {
                       <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
                     </div>
                   </div>
-
                   <div className="space-y-4 pt-4 border-t border-slate-100">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Short Summary (Excerpt)</label>
@@ -419,32 +435,28 @@ export function AdminPanel() {
                         rows={3}
                       />
                     </div>
-
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Category</label>
                         <select 
-                          value={editingPost.category || "General"}
+                          value={editingPost.category || "Maintenance tips"}
                           onChange={(e) => setEditingPost({...editingPost, category: e.target.value})}
                           className="w-full p-4 bg-slate-50 rounded-xl border-none focus:ring-0 text-sm font-bold text-slate-900"
                         >
-                          <option>General</option>
-                          <option>Maintenance</option>
-                          <option>Commercial</option>
-                          <option>HVAC Tips</option>
+                          <option value="Maintenance tips">Maintenance tips</option>
+                          <option value="Industry news">Industry news</option>
                         </select>
                       </div>
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Author</label>
                         <input 
-                          type="text" 
+                          type="text" Fix #3 & #4: Add 15min admin session timeout and update HandyBook categories
                           value={editingPost.author || "Diamond Ridge Team"}
                           onChange={(e) => setEditingPost({...editingPost, author: e.target.value})}
                           className="w-full p-4 bg-slate-50 rounded-xl border-none focus:ring-0 text-sm font-bold text-slate-900"
                         />
                       </div>
                     </div>
-
                     <div className="flex items-center justify-between p-4 bg-[#D08700]/10 rounded-xl border border-[#D08700]/20">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-[#D08700] uppercase">Visibility</span>
@@ -458,7 +470,6 @@ export function AdminPanel() {
                       </button>
                     </div>
                   </div>
-
                   <button 
                     onClick={handleSavePost}
                     disabled={loading}
