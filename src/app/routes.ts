@@ -12,6 +12,7 @@ import { Blog } from "./components/Blog";
 import { BlogPost } from "./components/BlogPost";
 import { HandyBook } from "./components/HandyBook";
 import { NotFound } from "./components/NotFound";
+import { AdminPanel } from "./components/AdminPanel";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: "quote", Component: RequestQuote },
       { path: "contact", Component: Contact },
       { path: "feedback", Component: Feedback },
+            { path: "admin", Component: AdminPanel },
     
       { path: "privacy-policy", Component: PrivacyPolicy },
       { path: "blog", Component: Blog },
