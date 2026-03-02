@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
+import { supabaseClient as supabase } from "../utils/supabase/client";
 import { 
   Star, Check, X, Trash2, Lock, Eye, EyeOff, 
   FileText, Plus, Save, Image as ImageIcon, 
@@ -16,7 +17,7 @@ import {
 } from "../utils/supabaseReviews";
 
 // IMPORTANT: In production, this should be an environment variable or a more secure system
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "";const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 type Tab = "dashboard" | "blog" | "reviews";
 
@@ -89,16 +90,27 @@ export function AdminPanel() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setAdminSecret(password); // Using the password as the secret for now
-      setError("");
-    } else {
-      setError("Incorrect admin credentials");
-    }
-  };
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+
+  const { data, error: rpcError } = await supabase
+    .rpc("check_admin_password", { p_password: password });
+
+  if (rpcError) {
+    console.error(rpcError);
+    setError("Login service unavailable. Please try again.");
+    return;
+  }
+
+  if (data === true) {
+    setIsAuthenticated(true);
+    setAdminSecret(password);
+  } else {
+    setError("Incorrect admin credentials");
+  }
+};
+
 
   // Blog Handlers
   const handleSavePost = async () => {
