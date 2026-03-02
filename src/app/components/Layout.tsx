@@ -166,8 +166,7 @@ export function Layout() {
                   <span className="absolute -bottom-8 left-0 bg-[#D08700] text-white text-[10px] px-2 py-1 rounded">Copied!</span>
                 )}
               </button>
-              <span className="hidden sm:flex items-center gap-2 text-xs sm:text-sm">                <155 className="w-4 h-4 text-[#D08700]" />
-                <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
+            <span className="hidden sm:flex items-center gap-2 text-xs sm:text-sm"> <MapPin className="w-4 h-4 text-[#D08700]" />                <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
                   16733 Vicky Lane, Orland Hills, IL 60487
                 </a>
               </span>
