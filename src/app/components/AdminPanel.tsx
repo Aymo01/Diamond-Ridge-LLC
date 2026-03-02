@@ -386,7 +386,7 @@ export function AdminPanel() {
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-slate-500 uppercase tracking-widest">Headline</label>
                     <input 
-                      type="text""
+                      type="text"
                       value={editingPost.title}
                       onChange={(e) => setEditingPost({...editingPost, title: e.target.value})}
                       className="w-full text-4xl font-extrabold text-slate-900 border-none focus:ring-0 p-0 placeholder:text-slate-200"
