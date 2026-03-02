@@ -16,8 +16,7 @@ import {
 } from "../utils/supabaseReviews";
 
 // IMPORTANT: In production, this should be an environment variable or a more secure system
-const ADMIN_PASSWORD = "DAdmin770500";
-const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "";const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 type Tab = "dashboard" | "blog" | "reviews";
 
