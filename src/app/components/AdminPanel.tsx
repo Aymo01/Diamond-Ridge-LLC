@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
-import { supabaseClient as supabase } from "../utils/supabase/client";
+import { supabaseClient as supabase } from "src/utils/supabase/client.ts";
 import { 
   Star, Check, X, Trash2, Lock, Eye, EyeOff, 
   FileText, Plus, Save, Image as ImageIcon, 
