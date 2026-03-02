@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Phone, MapPin, Mail, MessageCircle, ChevronUp, Send, CheckCircle, AlertCircle, Loader, Instagram, Facebook, Copy } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Breadcrumb } from "./Breadcrumb";
+import { AdminPanel } from "./AdminPanel";
 import { sendEmail, TEMPLATES } from "../utils/emailjs";
 
 export function Layout() {
@@ -390,6 +391,9 @@ export function Layout() {
           </div>
         </div>
       </footer>
+
+            {/* Admin Panel Modal */}
+      {showAdminPanel && <AdminPanel />}
     </div>
   );
 }
