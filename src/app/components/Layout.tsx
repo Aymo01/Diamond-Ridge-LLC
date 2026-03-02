@@ -5,6 +5,7 @@ import { Menu, X, Phone, MapPin, Mail, MessageCircle, ChevronUp, Send, CheckCirc
 import logo from "@/assets/logo.png";
 import { Breadcrumb } from "./Breadcrumb";
 import { sendEmail, TEMPLATES } from "../utils/emailjs";
+import { AdminPanel } from "./AdminPanel";
 
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
