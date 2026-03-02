@@ -12,6 +12,7 @@ import { Blog } from "./components/Blog";
 import { BlogPost } from "./components/BlogPost";
 import { HandyBook } from "./components/HandyBook";
 import { NotFound } from "./components/NotFound";
+import { AdminPanel } from "./components/AdminPanel"; 
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,12 @@ export const router = createBrowserRouter([
       { path: "blog", Component: Blog },
       { path: "blog/:slug", Component: BlogPost },
       { path: "*", Component: NotFound },
+            { path: "blog/:slug", Component: BlogPost },
+
+      { path: "admin", Component: AdminPanel },
+
+      { path: "*", Component: NotFound },
+
     ],
   },
 ]);
