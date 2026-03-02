@@ -77,14 +77,14 @@ export function HandyBook() {
     setLoading(false);
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      "": "bg-blue-100 text-blue-700",
-      "": "bg-purple-100 text-purple-700",
-    
-    };
-    return colors[category] || "bg-gray-100 text-gray-700";
+ const getCategoryColor = (category: string) => {
+  const colors: Record<string, string> = {
+    "Maintenance tips": "bg-blue-100 text-blue-700",
+    "Industry news": "bg-purple-100 text-purple-700",
   };
+
+  return colors[category] || "bg-gray-100 text-gray-700";
+};;
 
   // Filter posts by search term
   const filteredPosts = posts.filter((post) => {
