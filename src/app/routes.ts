@@ -12,7 +12,8 @@ import { Blog } from "./components/Blog";
 import { BlogPost } from "./components/BlogPost";
 import { HandyBook } from "./components/HandyBook";
 import { NotFound } from "./components/NotFound";
-import { AdminPanel } from "./components/AdminPanel"; 
+import { AdminLogin } from "./components/AdminLogin";
+import { AdminDashboard } from "./components/AdminDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -28,17 +29,12 @@ export const router = createBrowserRouter([
       { path: "quote", Component: RequestQuote },
       { path: "contact", Component: Contact },
       { path: "feedback", Component: Feedback },
-    
       { path: "privacy-policy", Component: PrivacyPolicy },
       { path: "blog", Component: Blog },
       { path: "blog/:slug", Component: BlogPost },
+      { path: "admin-login", Component: AdminLogin },
+      { path: "admin", Component: AdminDashboard },
       { path: "*", Component: NotFound },
-            { path: "blog/:slug", Component: BlogPost },
-
-      { path: "admin", Component: AdminPanel },
-
-      { path: "*", Component: NotFound },
-
     ],
   },
 ]);
