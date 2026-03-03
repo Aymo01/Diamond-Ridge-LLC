@@ -1,11 +1,10 @@
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { Menu, X, Phone, MapPin, Mail, MessageCircle, ChevronUp, Send, CheckCircle, AlertCircle, Loader, Instagram, Facebook, Copy } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Breadcrumb } from "./Breadcrumb";
 import { sendEmail, TEMPLATES } from "../utils/emailjs";
-import { AdminPanel } from "./AdminPanel";
 
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,7 +14,7 @@ export function Layout() {
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [newsletterMessage, setNewsletterMessage] = useState("");
   const location = useLocation();
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const navigate = useNavigate();
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,17 +31,17 @@ export function Layout() {
     window.scrollTo(0, 0);
   }, [location]);
 
-  // Keyboard shortcut: Ctrl+Shift+X to open Admin Panel
+  // Keyboard shortcut: Ctrl+Shift+X to navigate to Admin Login
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'X') {
+      if (e.ctrlKey && e.shiftKey && e.key.toUpperCase() === 'X') {
         e.preventDefault();
-        setShowAdminPanel(true);
+        navigate('/admin-login');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [navigate]);
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -108,7 +107,6 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Social Floating Icons - Bottom Left */}
       <div className="fixed left-6 bottom-6 z-50 flex flex-col gap-4">
         <motion.a
           href="https://www.instagram.com/diamond.ridge.llc/"
@@ -134,7 +132,6 @@ export function Layout() {
         </motion.a>
       </div>
 
-      {/* Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -144,7 +141,6 @@ export function Layout() {
             : "bg-transparent"
         }`}
       >
-        {/* Top Bar */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-2">
           <div className="container mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center gap-4">
@@ -160,21 +156,21 @@ export function Layout() {
               </button>
               <button 
                 onClick={() => handleCopy("info@diamondridgellc.us", "email")}
-                className="flex items-center gap-2 text-xs sm:text-sm hover:text-[#D08700] transition-colors relative"              >
+                className="flex items-center gap-2 text-xs sm:text-sm hover:text-[#D08700] transition-colors relative" >
                 <Mail className="w-4 h-4" />
                 <span>info@diamondridgellc.us</span>
                 {copyStatus === "email" && (
                   <span className="absolute -bottom-8 left-0 bg-[#D08700] text-white text-[10px] px-2 py-1 rounded">Copied!</span>
                 )}
               </button>
-            <span className="hidden sm:flex items-center gap-2 text-xs sm:text-sm"> <MapPin className="w-4 h-4 text-[#D08700]" />                <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
-                  16733 Vicky Lane, Orland Hills, IL 60487
-                </a>
+              <span className="hidden sm:flex items-center gap-2 text-xs sm:text-sm"> <MapPin className="w-4 h-4 text-[#D08700]" /> <a href="https://www.google.com/maps/search/?api=1&query=16733+Vicky+Lane+Orland+Hills+IL+60487" target="_blank" rel="noopener noreferrer" className="hover:text-[#D08700] transition-colors">
+                16733 Vicky Lane, Orland Hills, IL 60487
+              </a>
               </span>
             </div>
           </div>
         </div>
-        {/* Main Navigation */}
+
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center">
@@ -186,6 +182,7 @@ export function Layout() {
                 transition={{ type: "spring", stiffness: 300 }}
               />
             </Link>
+
             <div className="hidden lg:flex items-center gap-8">
               {navItems.map((item) => (
                 <Link
@@ -213,6 +210,7 @@ export function Layout() {
                 </Link>
               ))}
             </div>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-gray-700 hover:text-[#D08700] transition-colors"
@@ -221,6 +219,7 @@ export function Layout() {
             </button>
           </div>
         </nav>
+
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -282,6 +281,7 @@ export function Layout() {
                 Professional commercial maintenance services you can trust.
               </p>
             </div>
+
             <div>
               <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
@@ -305,6 +305,7 @@ export function Layout() {
                 </Link>
               </div>
             </div>
+
             <div className="space-y-4">
               <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
               <div className="flex items-center gap-2">
@@ -338,6 +339,7 @@ export function Layout() {
                 </a>
               </div>
             </div>
+
             <div>
               <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
               <p className="text-gray-300 mb-4 text-sm">
@@ -371,18 +373,6 @@ export function Layout() {
                   )}
                   Subscribe
                 </motion.button>
-                {newsletterStatus === "success" && (
-                  <div className="mt-2 text-sm text-[#D08700] flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4" />
-                    {newsletterMessage}
-                  </div>
-                )}
-                {newsletterStatus === "error" && (
-                  <div className="mt-2 text-sm text-red-500 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {newsletterMessage}
-                  </div>
-                )}
               </form>
             </div>
           </div>
@@ -391,7 +381,6 @@ export function Layout() {
           </div>
         </div>
       </footer>
-      {showAdminPanel && <AdminPanel />}
     </div>
   );
 }
