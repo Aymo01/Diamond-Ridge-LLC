@@ -136,8 +136,9 @@ const handleLogin = async (e: React.FormEvent) => {
       setEditingPost(null);
       loadData();
     } catch (err) {
-      alert("Failed to save post");
-    } finally {
+    }       const errorMessage = err instanceof Error ? err.message : String(err);
+      alert(`Failed to save post: ${errorMessage}\n\nCheck browser console for details.`);
+      console.error("Save post error:", err);finally {
       setLoading(false);
     }
   };
