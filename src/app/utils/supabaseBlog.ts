@@ -90,22 +90,20 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 /**
- * Create a new blog post (admin)
+ * Create a new blog post (admin) - throws on error so caller gets real message
  */
 export async function createPost(
   postData: Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>,
   adminSecret: string
-): Promise<BlogPost | null> {
-  try {
-    const result = await apiRequest('/posts', {
-      method: 'POST',
-      body: JSON.stringify(postData),
-    }, adminSecret);
-    return result.data || null;
-  } catch (error) {
-    console.error('Error creating post:', error);
-    return null;
+): Promise<BlogPost> {
+  const result = await apiRequest('/posts', {
+    method: 'POST',
+    body: JSON.stringify(postData),
+  }, adminSecret);
+  if (!result.data) {
+    throw new Error('No data returned from server');
   }
+  return result.data;
 }
 
 /**
@@ -144,27 +142,25 @@ export async function deletePost(id: string, adminSecret: string): Promise<boole
 }
 
 /**
- * Upload a cover image for a blog post
+ * Upload a cover image for a blog post - throws on error so caller gets real message
  */
-export async function uploadBlogImage(file: File): Promise<string | null> {
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = await fetch(`${STORAGE_BASE}/upload`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${publicAnonKey}`,
-      },
-      body: formData,
-    });
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Upload failed' }));
-      throw new Error(error.error || 'Upload failed');
-    }
-    const result = await response.json();
-    return result.url || null;
-  } catch (error) {
-    console.error('Error uploading image:', error);
-    return null;
+export async function uploadBlogImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await fetch(`${STORAGE_BASE}/upload`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${publicAnonKey}`,
+    },
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Upload failed' }));
+    throw new Error(error.error || 'Image upload failed');
   }
+  const result = await response.json();
+  if (!result.url) {
+    throw new Error('No URL returned from image upload');
+  }
+  return result.url;
 }
