@@ -141,7 +141,7 @@ export function Home() {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.7 }}
-                                        className="mt-8 text-white/90 text-xs md:text-sm tracking-[0.35em] uppercase font-semibold bg-black/40 rounded-full inline-flex items-center px-5 py-3 border border-white/30 shadow-lg"
+                                        className="mt-8 text-white text-sm md:text-base tracking-[0.3em] uppercase font-bold bg-[#1a1005] rounded-full inline-flex items-center px-6 py-3 border-2 border-[#D08700] shadow-[0_0_20px_rgba(208,135,0,0.4)]"
                                       >
                                         <span className="text-[#D08700] mr-3">One Call.</span><span className="mx-3">One Ridge.</span><span className="text-[#D08700] ml-3">One Solution.</span>
                                       </motion.p>
