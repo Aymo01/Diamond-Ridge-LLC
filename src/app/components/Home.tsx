@@ -137,6 +137,14 @@ export function Home() {
                     </motion.button>
                   </Link>
                 </motion.div>
+                          <motion.p
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.7 }}
+                                        className="mt-6 text-white/70 text-sm tracking-[0.25em] uppercase font-medium"
+                                      >
+                                        <span className="text-[#D08700]">One Call.</span> One Ridge. <span className="text-[#D08700]">One Solution.</span>
+                                      </motion.p>
               </motion.div>
 
               <motion.div
