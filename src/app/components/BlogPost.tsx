@@ -111,7 +111,7 @@ export function BlogPost() {
               Sorry, the blog post you're looking for doesn't exist or has been removed.
             </p>
             <div className="flex gap-4 justify-center">
-              <Link to="/blog">
+              <Link to="/handybook">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -148,11 +148,11 @@ export function BlogPost() {
             className="max-w-4xl mx-auto"
           >
             <Link
-              to="/blog"
+              to="/handybook"
               className="inline-flex items-center gap-2 text-[#D08700] hover:text-[#B07000] mb-6 transition-colors font-semibold"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back to Blog
+              Back to HandyBook
             </Link>
 
             <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4 ${getCategoryColor(post.category || "")}`}>
@@ -233,14 +233,14 @@ export function BlogPost() {
               )}
             </div>
 
-            {/* Back to Blog CTA */}
+            {/* Back to HandyBook CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className="mt-16 pt-8 border-t-2 border-gray-200"
             >
-              <Link to="/blog">
+              <Link to="/handybook">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
