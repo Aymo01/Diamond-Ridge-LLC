@@ -56,9 +56,9 @@ export function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-xl text-gray-600"
+              className="text-sm md:text-base font-bold uppercase tracking-[0.3em] text-white inline-flex items-center bg-[#1a1005] rounded-full px-6 py-3 border-2 border-[#D08700] shadow-[0_0_20px_rgba(208,135,0,0.35)] mt-2"
             >
-              One Call. One Ridge. One Solution.
+                            <span className="text-[#D08700] mr-3">One Call.</span><span className="mx-3">One Ridge.</span><span className="text-[#D08700] ml-3">One Solution.</span>
             </motion.p>
           </motion.div>
         </div>
