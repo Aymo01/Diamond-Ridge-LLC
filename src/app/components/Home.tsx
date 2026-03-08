@@ -141,9 +141,9 @@ export function Home() {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.7 }}
-                                        className="mt-6 text-white/70 text-sm tracking-[0.25em] uppercase font-medium"
+                                        className="mt-8 text-white/90 text-xs md:text-sm tracking-[0.35em] uppercase font-semibold bg-black/40 rounded-full inline-flex items-center px-5 py-3 border border-white/30 shadow-lg"
                                       >
-                                        <span className="text-[#D08700]">One Call.</span> One Ridge. <span className="text-[#D08700]">One Solution.</span>
+                                        <span className="text-[#D08700] mr-3">One Call.</span><span className="mx-3">One Ridge.</span><span className="text-[#D08700] ml-3">One Solution.</span>
                                       </motion.p>
               </motion.div>
 
