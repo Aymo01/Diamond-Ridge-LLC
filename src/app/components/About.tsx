@@ -58,7 +58,7 @@ export function About() {
               transition={{ delay: 0.3 }}
               className="text-xl text-gray-600"
             >
-              Your trusted partner in commercial maintenance excellence
+              One Call. One Ridge. One Solution.
             </motion.p>
           </motion.div>
         </div>
