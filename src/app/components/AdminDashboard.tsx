@@ -10,7 +10,7 @@ export function AdminDashboard() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('Maintenance tips');
+  const [category, setCategory] = useState('Maintenance Tips');
   const [author, setAuthor] = useState('Diamond Ridge Team');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -57,7 +57,7 @@ export function AdminDashboard() {
         slug: generateSlug(title),
         excerpt: excerpt || '',
         content: content || '',
-        category: category || 'Maintenance tips',
+        category: category || 'Maintenance Tips',
         cover_image: imageUrl || null,
         author,
         published: true,
@@ -72,7 +72,7 @@ export function AdminDashboard() {
       setTitle('');
       setExcerpt('');
       setContent('');
-      setCategory('Maintenance tips');
+      setCategory('Maintenance Tips');
       setImageFile(null);
       setImagePreview('');
       setShowSuccess(true);
@@ -90,7 +90,7 @@ export function AdminDashboard() {
     await loadPosts(adminSecret);
   };
 
-  const categories = ['Maintenance tips', 'Industry news'];
+  const categories = ['Maintenance Tips', 'Industry News', 'Case Studies', 'Company Updates'];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
