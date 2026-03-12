@@ -199,8 +199,7 @@ export function BlogPost() {
             {/* Content */}
             <div className="prose prose-lg max-w-none">
               {post.content ? (
-                post.content.split('
-').map((paragraph, index) => (
+                post.content.split('\n').map((paragraph, index) => (
                   paragraph.trim() && (
                     <p key={index} className="text-gray-700 leading-relaxed mb-6 text-lg">
                       {paragraph}
