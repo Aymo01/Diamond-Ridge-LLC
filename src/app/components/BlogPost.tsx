@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { ArrowLeft, Calendar, User, Tag, BookOpen, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, User, BookOpen, Clock } from "lucide-react";
 import { getPostBySlug, BlogPost as BlogPostType } from "../utils/supabaseBlog";
 
 export function BlogPost() {
@@ -17,13 +17,11 @@ export function BlogPost() {
       setLoading(false);
       return;
     }
-
     loadPost();
   }, [slug]);
 
   const loadPost = async () => {
     if (!slug) return;
-
     setLoading(true);
     const fetchedPost = await getPostBySlug(slug);
     
@@ -39,16 +37,6 @@ export function BlogPost() {
     }
     
     setLoading(false);
-  };
-
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      "Maintenance Tips": "bg-blue-100 text-blue-700",
-      "Case Studies": "bg-green-100 text-green-700",
-      "Industry News": "bg-purple-100 text-purple-700",
-      "Company Updates": "bg-orange-100 text-orange-700",
-    };
-    return colors[category] || "bg-gray-100 text-gray-700";
   };
 
   // Calculate estimated read time (average 200 words per minute)
@@ -77,7 +65,6 @@ export function BlogPost() {
             </div>
           </div>
         </section>
-
         {/* Content Skeleton */}
         <section className="py-20">
           <div className="container mx-auto px-4">
@@ -154,16 +141,9 @@ export function BlogPost() {
               <ArrowLeft className="w-5 h-5" />
               Back to HandyBook
             </Link>
-
-            <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4 ${getCategoryColor(post.category || "")}`}>
-              <Tag className="w-4 h-4 inline mr-2" />
-              {post.category}
-            </span>
-
             <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
               {post.title}
             </h1>
-
             <div className="flex flex-wrap items-center gap-6 text-gray-300">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5" />
@@ -208,7 +188,6 @@ export function BlogPost() {
                 className="w-full h-96 object-cover rounded-2xl shadow-2xl mb-12"
               />
             )}
-
             {/* Excerpt */}
             {post.excerpt && (
               <div className="bg-[#D08700]/5 border-l-4 border-[#D08700] p-6 rounded-r-lg mb-12">
@@ -217,11 +196,11 @@ export function BlogPost() {
                 </p>
               </div>
             )}
-
             {/* Content */}
             <div className="prose prose-lg max-w-none">
               {post.content ? (
-                post.content.split('\n').map((paragraph, index) => (
+                post.content.split('
+').map((paragraph, index) => (
                   paragraph.trim() && (
                     <p key={index} className="text-gray-700 leading-relaxed mb-6 text-lg">
                       {paragraph}
@@ -232,7 +211,6 @@ export function BlogPost() {
                 <p className="text-gray-700 text-lg">No content available.</p>
               )}
             </div>
-
             {/* Back to HandyBook CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
