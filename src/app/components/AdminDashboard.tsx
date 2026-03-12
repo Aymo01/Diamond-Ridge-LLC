@@ -10,7 +10,6 @@ export function AdminDashboard() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('Maintenance Tips');
   const [author, setAuthor] = useState('Diamond Ridge Team');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -57,7 +56,7 @@ export function AdminDashboard() {
         slug: generateSlug(title),
         excerpt: excerpt || '',
         content: content || '',
-        category: category || 'Maintenance Tips',
+        category: 'General',
         cover_image: imageUrl || null,
         author,
         published: true,
@@ -72,7 +71,6 @@ export function AdminDashboard() {
       setTitle('');
       setExcerpt('');
       setContent('');
-      setCategory('Maintenance Tips');
       setImageFile(null);
       setImagePreview('');
       setShowSuccess(true);
@@ -89,8 +87,6 @@ export function AdminDashboard() {
     await deletePost(id, adminSecret);
     await loadPosts(adminSecret);
   };
-
-  const categories = ['Maintenance Tips', 'Industry News', 'Case Studies', 'Company Updates'];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -135,16 +131,19 @@ export function AdminDashboard() {
             <Plus className="w-6 h-6 text-[#D08700]" />
             <h2 className="text-2xl font-bold text-white">Create New Post</h2>
           </div>
+
           {showSuccess && (
             <div className="mb-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm">
               ✓ Blog post published successfully!
             </div>
           )}
+
           {publishError && (
             <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-sm">
               {publishError}
             </div>
           )}
+
           <form onSubmit={handlePublish} className="space-y-4">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-2">Post Title *</label>
@@ -152,31 +151,28 @@ export function AdminDashboard() {
                 className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent"
                 placeholder="Enter blog post title" required />
             </div>
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-2">Category *</label>
-              <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent" required>
-                {categories.map((cat) => (<option key={cat} value={cat}>{cat}</option>))}
-              </select>
-            </div>
+
             <div>
               <label htmlFor="author" className="block text-sm font-medium text-gray-300 mb-2">Author *</label>
               <input type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}
                 className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent"
                 placeholder="Author name" required />
             </div>
+
             <div>
               <label htmlFor="excerpt" className="block text-sm font-medium text-gray-300 mb-2">Short Excerpt *</label>
               <textarea id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={3}
                 className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent resize-none"
                 placeholder="Brief description for the blog card (2-3 sentences)" required />
             </div>
+
             <div>
               <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-2">Full Content *</label>
               <textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} rows={8}
                 className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D08700] focus:border-transparent resize-none"
                 placeholder="Write your full blog post content here..." required />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Cover Image</label>
               {!imagePreview ? (
@@ -198,6 +194,7 @@ export function AdminDashboard() {
                 </div>
               )}
             </div>
+
             <button type="submit" disabled={isPublishing}
               className="w-full bg-[#D08700] hover:bg-[#B07000] text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50">
               {isPublishing ? <><Loader2 className="w-4 h-4 animate-spin" />Publishing...</> : 'Publish Blog Post'}
@@ -208,6 +205,7 @@ export function AdminDashboard() {
         {/* Published Posts */}
         <div className="bg-[#1a1a1a] rounded-2xl p-8 border border-gray-800">
           <h2 className="text-2xl font-bold text-white mb-6">Published Posts</h2>
+          
           {posts.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
               <p>No blog posts yet.</p>
@@ -226,7 +224,6 @@ export function AdminDashboard() {
                           <Calendar className="w-3 h-3" />
                           <span>{new Date(post.created_at).toLocaleDateString()}</span>
                         </div>
-                        <span className="bg-[#D08700]/20 text-[#D08700] px-2 py-1 rounded">{post.category}</span>
                         <span className={`px-2 py-1 rounded text-xs ${post.published ? 'bg-green-500/20 text-green-500' : 'bg-gray-500/20 text-gray-500'}`}>
                           {post.published ? 'Published' : 'Draft'}
                         </span>
