@@ -32,10 +32,12 @@ async function apiRequest(endpoint: string, options: RequestInit = {}, adminSecr
       ...options.headers,
     },
   });
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Unknown error' }));
     throw new Error(error.error || `HTTP ${response.status}`);
   }
+
   return response.json();
 }
 
@@ -63,12 +65,11 @@ export async function getAllPosts(adminSecret: string): Promise<BlogPost[]> {
 }
 
 /**
- * Fetch all published blog posts, optionally filtered by category
+ * Fetch all published blog posts
  */
-export async function getPublishedPosts(category?: string): Promise<BlogPost[]> {
+export async function getPublishedPosts(): Promise<BlogPost[]> {
   try {
-    const queryParam = category && category !== 'All' ? `?category=${encodeURIComponent(category)}` : '';
-    const result = await apiRequest(`/posts/published${queryParam}`);
+    const result = await apiRequest(`/posts/published`);
     return result.data || [];
   } catch (error) {
     console.error('Error fetching published posts:', error);
@@ -100,9 +101,11 @@ export async function createPost(
     method: 'POST',
     body: JSON.stringify(postData),
   }, adminSecret);
+
   if (!result.data) {
     throw new Error('No data returned from server');
   }
+
   return result.data;
 }
 
@@ -147,6 +150,7 @@ export async function deletePost(id: string, adminSecret: string): Promise<boole
 export async function uploadBlogImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
+
   const response = await fetch(`${STORAGE_BASE}/upload`, {
     method: 'POST',
     headers: {
@@ -154,13 +158,16 @@ export async function uploadBlogImage(file: File): Promise<string> {
     },
     body: formData,
   });
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Upload failed' }));
     throw new Error(error.error || 'Image upload failed');
   }
+
   const result = await response.json();
   if (!result.url) {
     throw new Error('No URL returned from image upload');
   }
+
   return result.url;
 }
