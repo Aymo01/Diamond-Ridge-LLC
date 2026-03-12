@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router";
-import { BookOpen, Calendar, User, ArrowLeft, Clock, Search } from "lucide-react";
+import { BookOpen, Calendar, User, Clock, Search } from "lucide-react";
 import { getPublishedPosts, BlogPost } from "../utils/supabaseBlog";
 
 export function HandyBook() {
@@ -40,11 +40,11 @@ export function HandyBook() {
   });
 
   const SkeletonCard = () => (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
-      <div className="p-6 space-y-4">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col h-full">
+      <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse flex-shrink-0" />
+      <div className="p-6 flex flex-col flex-1 space-y-4">
         <div className="h-8 bg-gray-300 rounded animate-pulse w-full" />
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1">
           <div className="h-4 bg-gray-200 rounded animate-pulse w-full" />
           <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
         </div>
@@ -97,7 +97,7 @@ export function HandyBook() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <SkeletonCard key={i} />
               ))}
@@ -114,17 +114,18 @@ export function HandyBook() {
               <h3 className="text-2xl text-gray-600 mb-4">No articles found</h3>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
               {filteredPosts.map((post, index) => (
                 <motion.div
                   key={post.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer group"
+                  className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer group flex flex-col h-full"
                   onClick={() => navigate(`/blog/${post.slug}`)}
                 >
-                  <div className="h-48 overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a]">
+                  {/* Fixed-height cover image */}
+                  <div className="h-48 overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] flex-shrink-0">
                     {post.cover_image ? (
                       <img
                         src={post.cover_image}
@@ -137,14 +138,15 @@ export function HandyBook() {
                       </div>
                     )}
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#D08700] transition-colors">
+                  {/* Card body stretches to fill remaining height */}
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#D08700] transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-gray-600 mb-4 line-clamp-3 flex-1">
                       {post.excerpt || "Read more to discover valuable insights..."}
                     </p>
-                    <div className="flex items-center justify-between text-sm text-gray-500 border-t border-gray-200 pt-4">
+                    <div className="flex items-center justify-between text-sm text-gray-500 border-t border-gray-200 pt-4 mb-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4" />
                         <span>{post.author}</span>
@@ -163,7 +165,7 @@ export function HandyBook() {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="mt-4 w-full bg-gradient-to-r from-[#D08700] to-[#B07000] text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all"
+                      className="w-full bg-gradient-to-r from-[#D08700] to-[#B07000] text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all mt-auto"
                     >
                       Read More
                     </motion.button>
