@@ -4,16 +4,25 @@ import { useParams, Link, useNavigate } from "react-router";
 import { ArrowLeft, Calendar, User, BookOpen, Clock } from "lucide-react";
 import { getPostBySlug, BlogPost as BlogPostType } from "../utils/supabaseBlog";
 
+// Module-level cache: persists across navigation without re-fetching
+const postCache = new Map<string, BlogPostType>();
+
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [post, setPost] = useState<BlogPostType | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<BlogPostType | null>(slug ? (postCache.get(slug) ?? null) : null);
+  const [loading, setLoading] = useState(slug ? !postCache.has(slug) : false);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (!slug) {
       setNotFound(true);
+      setLoading(false);
+      return;
+    }
+    // If already cached, skip fetching
+    if (postCache.has(slug)) {
+      setPost(postCache.get(slug)!);
       setLoading(false);
       return;
     }
@@ -26,6 +35,7 @@ export function BlogPost() {
     const fetchedPost = await getPostBySlug(slug);
     
     if (fetchedPost) {
+      postCache.set(slug, fetchedPost);
       setPost(fetchedPost);
       document.title = `${fetchedPost.title} | Diamond Ridge LLC`;
       const metaDescription = document.querySelector('meta[name="description"]');
@@ -167,7 +177,6 @@ export function BlogPost() {
           </motion.div>
         </div>
       </section>
-
       {/* Post Content */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -185,6 +194,8 @@ export function BlogPost() {
                 transition={{ delay: 0.3 }}
                 src={post.cover_image}
                 alt={post.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-96 object-cover rounded-2xl shadow-2xl mb-12"
               />
             )}
